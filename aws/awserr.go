@@ -33,7 +33,7 @@ func retryOnAwsCode(code string, f func() (interface{}, error)) (interface{}, er
 		var err error
 		resp, err = f()
 		if err != nil {
-			if tfawserr.ErrCodeEquals(err, code) {
+			if isAWSErr(err, code, "") {
 				return resource.RetryableError(err)
 			}
 			return resource.NonRetryableError(err)
